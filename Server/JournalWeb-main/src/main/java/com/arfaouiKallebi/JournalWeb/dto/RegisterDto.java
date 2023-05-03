@@ -1,9 +1,4 @@
 package com.arfaouiKallebi.JournalWeb.dto;
-import com.arfaouiKallebi.JournalWeb.model.Adresse;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -22,7 +17,7 @@ public class RegisterDto implements Serializable {
     String password ;
     String role ;
     String jobTitle ;
-    AdresseDto address ;
+    String address ;
     String phoneNumber ;
     String institution ;
 }

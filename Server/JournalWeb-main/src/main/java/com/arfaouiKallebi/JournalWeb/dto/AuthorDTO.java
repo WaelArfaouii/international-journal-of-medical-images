@@ -18,23 +18,24 @@ public class AuthorDTO {
     private String jobTitle ;
     @JsonIgnore
     List<ArticleDTO> articles ;
-    private AdresseDto address ;
+    private String address ;
     private String phoneNumber ;
     private String institution ;
-    private String role = "Author" ;
+    private String role  ;
     public static AuthorDTO fromEntity(Author author) {
         if (author == null) {
             return null;
         }
         return AuthorDTO.builder()
+                .id(author.getId())
                 .firstName(author.getFirstName())
                 .lastName(author.getLastName())
                 .email(author.getEmail())
                 .jobTitle(author.getJobTitle())
                 .phoneNumber(author.getPhoneNumber())
                 .institution(author.getInstitution())
-                .role(author.getRole())
-                .address(AdresseDto.fromEntity(author.getAddress()))
+                .role("Author")
+                .address(author.getAddress())
                 .build();
     }
 
@@ -49,8 +50,8 @@ public class AuthorDTO {
         author.setJobTitle(authorDTO.getJobTitle());
         author.setInstitution(authorDTO.getInstitution());
         author.setJobTitle(authorDTO.getJobTitle());
-        author.setRole(authorDTO.getRole());
-        author.setAddress(AdresseDto.toEntity(authorDTO.getAddress()));
+        author.setPhoneNumber(authorDTO.getPhoneNumber());
+        author.setAddress(authorDTO.getAddress());
 
         return author;
     }

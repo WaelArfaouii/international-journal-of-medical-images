@@ -13,23 +13,24 @@ public class EditorDTO {
     private String email ;
     private String jobTitle ;
     private String country ;
-    private AdresseDto address ;
+    private String address ;
     private String phoneNumber ;
     private String institution ;
-    private String role = "Editor" ;
+    private String role ;
     public static EditorDTO fromEntity(Editor editor) {
         if (editor == null) {
             return null;
         }
         return EditorDTO.builder()
+                .id(editor.getId())
                 .firstName(editor.getFirstName())
                 .lastName(editor.getLastName())
                 .email(editor.getEmail())
                 .jobTitle(editor.getJobTitle())
                 .phoneNumber(editor.getPhoneNumber())
                 .institution(editor.getInstitution())
-                .role(editor.getRole())
-                .address(AdresseDto.fromEntity(editor.getAddress()))
+                .role("Editor")
+                .address(editor.getAddress())
                 .build();
     }
 
@@ -44,8 +45,8 @@ public class EditorDTO {
         editor.setJobTitle(editorDTO.getJobTitle());
         editor.setInstitution(editorDTO.getInstitution());
         editor.setJobTitle(editorDTO.getJobTitle());
-        editor.setRole(editorDTO.getRole());
-        editor.setAddress(AdresseDto.toEntity(editorDTO.getAddress()));
+        editor.setPhoneNumber(editor.getPhoneNumber());
+        editor.setAddress(editorDTO.getAddress());
 
 
 

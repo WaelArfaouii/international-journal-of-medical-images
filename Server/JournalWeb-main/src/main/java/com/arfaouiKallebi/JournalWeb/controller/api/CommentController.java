@@ -10,16 +10,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/comments")
-public class CommentController {
+public class    CommentController {
     @Autowired
     private CommentService commentService ;
     @GetMapping
     public List<CommentDTO> getComments(){
         return commentService.findAll() ;
-    }
-    @GetMapping("/{id}")
-    public CommentDTO getCommentById(@PathVariable Long id){
-        return commentService.findById(id);
     }
     @DeleteMapping("delete/{id}")
     public CommentDTO deleteCommentById(@PathVariable Long id){

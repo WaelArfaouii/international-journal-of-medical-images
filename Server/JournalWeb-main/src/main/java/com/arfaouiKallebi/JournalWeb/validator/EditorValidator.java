@@ -13,7 +13,6 @@ public class EditorValidator {
                 errors.add("Enter your last name !") ;
                 errors.add("Enter your email !") ;
                 errors.add("Enter your job title !") ;
-                errors.add("Enter your address !") ;
                 errors.add("Enter your phone number !") ;
                 errors.add("Enter your institution !") ;
                 return errors ;
@@ -31,7 +30,7 @@ public class EditorValidator {
             if (!StringUtils.hasLength(editorDTO.getJobTitle())) {
                 errors.add("Enter your job title !") ;
             }
-            if (editorDTO.getAddress().getId() == null) {
+            if (editorDTO.getAddress() == null) {
                 errors.add("Enter your address !") ;
             }
             if (!StringUtils.hasLength(editorDTO.getPhoneNumber())) {

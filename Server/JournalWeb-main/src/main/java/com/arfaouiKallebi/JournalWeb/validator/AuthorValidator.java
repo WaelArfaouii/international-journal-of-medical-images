@@ -12,7 +12,6 @@ public class AuthorValidator {
             errors.add("Enter your last name !") ;
             errors.add("Enter your email !") ;
             errors.add("Enter your job title !") ;
-            errors.add("Enter your address !") ;
             errors.add("Enter your phone number !") ;
             errors.add("Enter your institution !") ;
             return errors ;
@@ -30,9 +29,9 @@ public class AuthorValidator {
         if (!StringUtils.hasLength(authorDTO.getJobTitle())) {
             errors.add("Enter your job title !") ;
         }
-//        if (authorDTO.getAddress().getId() == null) {
-//            errors.add("Enter your address !") ;
-//        }
+        if (authorDTO.getAddress() == null) {
+            errors.add("Enter your address !") ;
+        }
         if (!StringUtils.hasLength(authorDTO.getPhoneNumber())) {
             errors.add("Enter your phone number !") ;
         }

@@ -13,7 +13,6 @@ public class ReviewerValidator {
             errors.add("Enter your last name !") ;
             errors.add("Enter your email !") ;
             errors.add("Enter your job title !") ;
-            errors.add("Enter your address !") ;
             errors.add("Enter your phone number !") ;
             errors.add("Enter your institution !") ;
             return errors ;
@@ -31,7 +30,7 @@ public class ReviewerValidator {
         if (!StringUtils.hasLength(reviewerDTO.getJobTitle())) {
             errors.add("Enter your job title !") ;
         }
-        if (reviewerDTO.getAddress().getId() == null) {
+        if (reviewerDTO.getAddress()== null) {
             errors.add("Enter your address !") ;
         }
         if (!StringUtils.hasLength(reviewerDTO.getPhoneNumber())) {

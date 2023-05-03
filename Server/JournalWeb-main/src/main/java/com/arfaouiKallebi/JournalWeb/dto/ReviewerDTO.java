@@ -18,10 +18,10 @@ public class ReviewerDTO {
     private String email ;
     private String jobTitle ;
     private String country ;
-    private AdresseDto address ;
+    private String address ;
     private String phoneNumber ;
     private String institution ;
-    private String role = "Reviewer" ;
+    private String role ;
     private List<InvitationDTO> invitations ;
 
     public static ReviewerDTO fromEntity(Reviewer reviewer) {
@@ -29,14 +29,15 @@ public class ReviewerDTO {
             return null;
         }
         return ReviewerDTO.builder()
+                .id(reviewer.getId())
                 .firstName(reviewer.getFirstName())
                 .lastName(reviewer.getLastName())
                 .email(reviewer.getEmail())
                 .jobTitle(reviewer.getJobTitle())
                 .phoneNumber(reviewer.getPhoneNumber())
                 .institution(reviewer.getInstitution())
-                .role(reviewer.getRole())
-                .address(AdresseDto.fromEntity(reviewer.getAddress()))
+                .address(reviewer.getAddress())
+                .role("Reviewer")
                 .invitations(reviewer.getInvitations() != null ?
                         reviewer.getInvitations().stream()
                                 .map(InvitationDTO::fromEntity)
@@ -55,12 +56,8 @@ public class ReviewerDTO {
         reviewer.setJobTitle(reviewerDTO.getJobTitle());
         reviewer.setInstitution(reviewerDTO.getInstitution());
         reviewer.setJobTitle(reviewerDTO.getJobTitle());
-        reviewer.setRole(reviewerDTO.getRole());
-        reviewer.setAddress(AdresseDto.toEntity(reviewerDTO.getAddress()));
-
-
-
-
+        reviewer.setPhoneNumber(reviewer.getPhoneNumber());
+        reviewer.setAddress(reviewerDTO.getAddress());
         return reviewer;
     }
 
