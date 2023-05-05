@@ -1,31 +1,23 @@
 package com.arfaouiKallebi.JournalWeb.controller.api;
-
-import com.arfaouiKallebi.JournalWeb.dto.ReviewerDTO;
-import com.arfaouiKallebi.JournalWeb.services.ReviewerService;
+import com.arfaouiKallebi.JournalWeb.dto.InvitationDTO;
+import com.arfaouiKallebi.JournalWeb.services.InvitationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/reviewers")
+@RequestMapping("api/reviewers/{idrev}")
 public class ReviewerController {
     @Autowired
-    private ReviewerService reviewerService ;
-    @GetMapping
-    public List<ReviewerDTO> getReviewers(){
-        return reviewerService.findAll() ;
+    private InvitationService invitationService ;
+
+    @GetMapping("invitations")
+    public List<InvitationDTO> getinvitations(@PathVariable Long idrev ){
+        return invitationService.findAll() ;
     }
-    @GetMapping("/{id}")
-    public ReviewerDTO getReviewerById(@PathVariable Long id){
-        return reviewerService.findById(id) ;
-    }
-    @DeleteMapping("delete/{id}")
-    public ReviewerDTO deleteReviewerById(@PathVariable Long id){
-        return reviewerService.deleteById(id);
-    }
-    @PostMapping("save")
-    public ReviewerDTO saveReviewer(@RequestBody ReviewerDTO reviewer){
-        return reviewerService.save(reviewer) ;
-    }
+    
 }

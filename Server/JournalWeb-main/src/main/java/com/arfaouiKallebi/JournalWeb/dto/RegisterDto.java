@@ -20,4 +20,5 @@ public class RegisterDto implements Serializable {
     String address ;
     String phoneNumber ;
     String institution ;
+    String country ;
 }

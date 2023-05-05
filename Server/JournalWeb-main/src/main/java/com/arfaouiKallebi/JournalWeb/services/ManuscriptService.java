@@ -11,11 +11,17 @@ public interface ManuscriptService {
 
     ManuscriptDTO save(ManuscriptDTO dto);
 
-    List<ManuscriptDTO> getProcessedManuscripts();
+    List<ManuscriptDTO> getIncompleteManuscripts(Long idauth);
 
-    List<ManuscriptDTO> getSentBackManuscripts();
+    List<ManuscriptDTO> getWaitingManuscripts(Long idauth);
 
-    List<ManuscriptDTO> getIncompleteManuscripts();
+    List<ManuscriptDTO> findManuscripts(Long idauth);
 
-    List<ManuscriptDTO> getWaitingManuscripts();
+    ManuscriptDTO deleteManuscriptById(Long idauth, Long id);
+
+    ManuscriptDTO saveManuscript(Long idauth, ManuscriptDTO manuscript);
+
+    List<ManuscriptDTO> getProcessedManuscripts(Long idauth);
+
+    List<ManuscriptDTO> getSentBackManuscripts(Long idauth);
 }

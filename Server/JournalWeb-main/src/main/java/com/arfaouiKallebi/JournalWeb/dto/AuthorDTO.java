@@ -17,7 +17,7 @@ public class AuthorDTO {
     private String email ;
     private String jobTitle ;
     @JsonIgnore
-    List<ArticleDTO> articles ;
+    List<ManuscriptDTO> mauscripts ;
     private String address ;
     private String phoneNumber ;
     private String institution ;

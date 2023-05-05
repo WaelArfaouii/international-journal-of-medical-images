@@ -1,11 +1,6 @@
 package com.arfaouiKallebi.JournalWeb.controller.api;
 
-import com.arfaouiKallebi.JournalWeb.dto.ArticleDTO;
-import com.arfaouiKallebi.JournalWeb.dto.AuthorDTO;
-import com.arfaouiKallebi.JournalWeb.dto.CommentDTO;
 import com.arfaouiKallebi.JournalWeb.dto.ManuscriptDTO;
-import com.arfaouiKallebi.JournalWeb.services.AuthorService;
-import com.arfaouiKallebi.JournalWeb.services.CommentService;
 import com.arfaouiKallebi.JournalWeb.services.ManuscriptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,72 +8,39 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/authors")
+@RequestMapping("api/authors/{idauth}")
+@CrossOrigin(origins = "*")
 public class AuthorController {
     @Autowired
-    private AuthorService authorService ;
-    @Autowired
     private ManuscriptService manuscriptService ;
-    @Autowired
-    private CommentService commentService ;
-    @GetMapping
-    public List<AuthorDTO> getAuthors(){
-        return authorService.findAll();
-    }
-    @GetMapping("/{id}")
-    public AuthorDTO getAuthorById(@PathVariable Long id){
-        return authorService.findById(id);
-    }
-    @DeleteMapping("delete/{id}")
-    public AuthorDTO deleteAuthorById(@PathVariable Long id){
-        return authorService.deleteById(id);
-    }
-    @PostMapping("save")
-    public AuthorDTO saveAuthor( @RequestBody AuthorDTO author){
-        return authorService.save(author);
-    }
+
     @GetMapping("manuscripts")
-    public List<ManuscriptDTO> getManuscripts(){
-        return manuscriptService.findAll() ;
-    }
-    @GetMapping("manuscripts/{id}")
-    public ManuscriptDTO getManuscriptById(@PathVariable Long id){
-        return manuscriptService.findById(id) ;
+    public List<ManuscriptDTO> getManuscripts(@PathVariable Long idauth){
+        return manuscriptService.findManuscripts(idauth) ;
     }
     @DeleteMapping("manuscripts/delete/{id}")
-    public ManuscriptDTO deleteManuscriptById(@PathVariable Long id){
-        return manuscriptService.deleteById(id);
+    public ManuscriptDTO deleteManuscriptById(@PathVariable Long idauth , @PathVariable Long id){
+        return manuscriptService.deleteManuscriptById(idauth, id);
     }
     @PostMapping("manuscripts/save")
-    public ManuscriptDTO saveManuscript(@RequestBody ManuscriptDTO manuscript){
-        return manuscriptService.save(manuscript);
+    public ManuscriptDTO saveManuscript(@PathVariable Long idauth , @RequestBody ManuscriptDTO manuscript){
+        return manuscriptService.saveManuscript(idauth , manuscript);
     }
     @GetMapping("manuscripts/processed")
-    public List<ManuscriptDTO> getProcessedManuscripts(){
-        return manuscriptService.getProcessedManuscripts();
+    public List<ManuscriptDTO> getProcessedManuscripts(@PathVariable Long idauth){
+        return manuscriptService.getProcessedManuscripts(idauth);
     }
     @GetMapping("manuscripts/sentBack")
-    public List<ManuscriptDTO> getSentBackManuscripts(){
-        return manuscriptService.getSentBackManuscripts();
+    public List<ManuscriptDTO> getSentBackManuscripts(@PathVariable Long idauth){
+        return manuscriptService.getSentBackManuscripts(idauth);
     }
     @GetMapping("manuscripts/incomplete")
-    public List<ManuscriptDTO> getIncompleteManuscripts(){
-        return manuscriptService.getIncompleteManuscripts();
+    public List<ManuscriptDTO> getIncompleteManuscripts(@PathVariable Long idauth){
+        return manuscriptService.getIncompleteManuscripts(idauth);
     }
     @GetMapping("manuscripts/waiting")
-    public List<ManuscriptDTO> getWaitingManuscripts(){
-        return manuscriptService.getWaitingManuscripts();
+    public List<ManuscriptDTO> getWaitingManuscripts(@PathVariable Long idauth){
+        return manuscriptService.getWaitingManuscripts(idauth);
     }
-    @GetMapping("manuscripts/{idman}/comments")
-    public List<CommentDTO> getComments(){
-        return commentService.findAll() ;
-    }
-    @DeleteMapping("manuscripts/{idman}/comments/delete/{id}")
-    public CommentDTO deleteCommentById(@PathVariable Long idman ,@PathVariable Long id){
-        return commentService.deleteById(id);
-    }
-    @PostMapping("manuscripts/{idman}/comments/save")
-    public CommentDTO saveComment(@RequestBody CommentDTO comment){
-        return commentService.save(comment) ;
-    }
+
 }

@@ -5,6 +5,8 @@ import com.arfaouiKallebi.JournalWeb.model.Comment;
 import com.arfaouiKallebi.JournalWeb.model.Item;
 import com.arfaouiKallebi.JournalWeb.model.Manuscript;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 @Builder
 public class ManuscriptDTO {
     private Long id ;
+    private Author submitter ;
     private String title ;
     private List<String> keywords ;
     @JsonIgnore

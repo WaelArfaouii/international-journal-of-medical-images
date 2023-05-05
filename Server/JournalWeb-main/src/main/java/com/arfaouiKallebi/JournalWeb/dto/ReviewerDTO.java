@@ -2,6 +2,7 @@ package com.arfaouiKallebi.JournalWeb.dto;
 
 
 import com.arfaouiKallebi.JournalWeb.model.Reviewer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 
@@ -22,6 +23,7 @@ public class ReviewerDTO {
     private String phoneNumber ;
     private String institution ;
     private String role ;
+    @JsonIgnore
     private List<InvitationDTO> invitations ;
 
     public static ReviewerDTO fromEntity(Reviewer reviewer) {

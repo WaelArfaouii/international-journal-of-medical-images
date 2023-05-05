@@ -1,8 +1,9 @@
 package com.arfaouiKallebi.JournalWeb.services.impl;
 import com.arfaouiKallebi.JournalWeb.dto.ManuscriptDTO;
-import com.arfaouiKallebi.JournalWeb.dto.ManuscriptDTO;
 import com.arfaouiKallebi.JournalWeb.exception.ErrorCodes;
 import com.arfaouiKallebi.JournalWeb.exception.InvalidEntityException;
+import com.arfaouiKallebi.JournalWeb.model.Manuscript;
+import com.arfaouiKallebi.JournalWeb.repository.AuthorRepository;
 import com.arfaouiKallebi.JournalWeb.repository.ManuscriptRepository;
 import com.arfaouiKallebi.JournalWeb.services.ManuscriptService;
 import com.arfaouiKallebi.JournalWeb.validator.ManuscriptValidator;
@@ -16,7 +17,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ManuscriptServiceImpl implements ManuscriptService {
     @Autowired
-    private ManuscriptRepository   manuscriptRepository ;
+    private ManuscriptRepository manuscriptRepository;
+    @Autowired
+    private AuthorRepository authorRepository;
+
     @Override
     public List<ManuscriptDTO> findAll() {
         return null;
@@ -47,31 +51,53 @@ public class ManuscriptServiceImpl implements ManuscriptService {
         );
     }
 
+
     @Override
-    public List<ManuscriptDTO> getProcessedManuscripts() {
-        return manuscriptRepository.getProcessedManuscripts().stream()
+    public List<ManuscriptDTO> getIncompleteManuscripts(Long idauth) {
+        return manuscriptRepository.getIncompleteManuscripts(idauth).stream()
                 .map(ManuscriptDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ManuscriptDTO> getSentBackManuscripts() {
-        return manuscriptRepository.getSentBackManuscripts().stream()
+    public List<ManuscriptDTO> getWaitingManuscripts(Long idauth) {
+        return manuscriptRepository.getWaitingManuscripts(idauth).stream()
                 .map(ManuscriptDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ManuscriptDTO> getIncompleteManuscripts() {
-       return manuscriptRepository.getIncompleteManuscripts().stream()
+    public List<ManuscriptDTO> findManuscripts(Long idauth) {
+        return manuscriptRepository.getManuscripts(idauth).stream()
                 .map(ManuscriptDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ManuscriptDTO> getWaitingManuscripts() {
-        return manuscriptRepository.getWaitingManuscripts().stream()
+    public ManuscriptDTO deleteManuscriptById(Long idauth, Long id) {
+        return ManuscriptDTO.fromEntity(manuscriptRepository.deleteManuscriptById(idauth, id));
+    }
+
+    @Override
+    public ManuscriptDTO saveManuscript(Long idauth, ManuscriptDTO manuscript) {
+        Manuscript man = ManuscriptDTO.toEntity(manuscript) ;
+        man.setSubmitter(authorRepository.findByAuthorId(idauth));
+        return ManuscriptDTO.fromEntity(manuscriptRepository.save(man));
+    }
+
+    @Override
+    public List<ManuscriptDTO> getProcessedManuscripts(Long idauth) {
+        return manuscriptRepository.getProcessedManuscripts(idauth).stream()
                 .map(ManuscriptDTO::fromEntity)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<ManuscriptDTO> getSentBackManuscripts(Long idauth) {
+        return manuscriptRepository.getSentBackManuscripts(idauth).stream()
+                .map(ManuscriptDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
 }
+

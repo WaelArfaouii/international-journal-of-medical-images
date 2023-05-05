@@ -16,6 +16,9 @@ import java.util.List;
 @Table(name = "manuscript")
 public class Manuscript extends AbstractEntity {
     private String title ;
+    @ManyToOne
+    @JoinColumn(name = "id_submitter")
+    private Author submitter ;
     private List<String> keywords ;
     @OneToMany(cascade = CascadeType.ALL)
     @Column(name = "comments")

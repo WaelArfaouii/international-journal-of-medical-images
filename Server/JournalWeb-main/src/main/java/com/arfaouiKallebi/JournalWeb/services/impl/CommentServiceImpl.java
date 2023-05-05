@@ -1,13 +1,9 @@
 package com.arfaouiKallebi.JournalWeb.services.impl;
-
-import com.arfaouiKallebi.JournalWeb.dto.ArticleDTO;
-import com.arfaouiKallebi.JournalWeb.dto.CommentDTO;
 import com.arfaouiKallebi.JournalWeb.dto.CommentDTO;
 import com.arfaouiKallebi.JournalWeb.exception.ErrorCodes;
 import com.arfaouiKallebi.JournalWeb.exception.InvalidEntityException;
 import com.arfaouiKallebi.JournalWeb.repository.CommentRepository;
 import com.arfaouiKallebi.JournalWeb.services.CommentService;
-import com.arfaouiKallebi.JournalWeb.validator.ArticleValidator;
 import com.arfaouiKallebi.JournalWeb.validator.CommentValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

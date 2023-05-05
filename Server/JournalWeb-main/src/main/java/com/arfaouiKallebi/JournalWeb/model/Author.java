@@ -14,30 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "author")
-public class Author implements Serializable {
-    @Id
-    @GeneratedValue
-    private Long id ;
-    @Column(name = "firstName")
-    private String firstName ;
-    @Column(name = "lastName")
-    private String lastName ;
-    @Column(name = "email")
-    private String email ;
-    @Column(name = "jobTitle")
-    private String jobTitle ;
-    @Column(name = "address")
-    private String address ;
-    @Column(name = "phoneNumber")
-    private String phoneNumber ;
-    @Column(name = "institution")
-    private String institution ;
+public class Author extends User {
 
-    @JsonIgnore
-    @CreatedDate
-    @Column(name="creation_date" )
-    private Instant createdDate = Instant.now() ;
 
+    @ManyToMany(fetch = FetchType.EAGER  , cascade = CascadeType.PERSIST)
     @Column(name = "manuscripts")
     List<Manuscript> manuscripts ;
 

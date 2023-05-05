@@ -1,32 +1,50 @@
 package com.arfaouiKallebi.JournalWeb.controller.api;
 
-import com.arfaouiKallebi.JournalWeb.dto.EditorDTO;
-import com.arfaouiKallebi.JournalWeb.dto.EditorDTO;
-import com.arfaouiKallebi.JournalWeb.services.EditorService;
+import com.arfaouiKallebi.JournalWeb.dto.InvitationDTO;
+import com.arfaouiKallebi.JournalWeb.dto.ReviewerDTO;
+import com.arfaouiKallebi.JournalWeb.services.InvitationService;
+import com.arfaouiKallebi.JournalWeb.services.ReviewerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/editors")
+@RequestMapping("api/editors/{idedit}")
 public class EditorController {
+    
     @Autowired
-    private EditorService editorService ;
-    @GetMapping
-    public List<EditorDTO> getEditors(){
-        return editorService.findAll() ;
+    private ReviewerService reviewerService ;
+    @Autowired
+    private InvitationService invitationService ;
+    @GetMapping("reviewers")
+    public List<ReviewerDTO> getReviewers(){
+        return reviewerService.findAll() ;
     }
-    @GetMapping("/{id}")
-    public EditorDTO getEditorById(@PathVariable Long id){
-        return editorService.findById(id) ;
+    @GetMapping("reviewers/{id}")
+    public ReviewerDTO getReviewerById(@PathVariable Long id){
+        return reviewerService.findById(id) ;
     }
-    @DeleteMapping("delete/{id}")
-    public EditorDTO deleteEditorById(@PathVariable Long id){
-        return editorService.deleteById(id);
+    @DeleteMapping("reviewers/delete/{id}")
+    public ReviewerDTO deleteReviewerById(@PathVariable Long id){
+        return reviewerService.deleteById(id);
     }
-    @PostMapping("save")
-    public EditorDTO saveEditor(@RequestBody EditorDTO editor){
-        return editorService.save(editor) ;
+    @PostMapping("reviewers/save")
+    public ReviewerDTO saveReviewer(@RequestBody ReviewerDTO reviewer){
+        return reviewerService.save(reviewer) ;
     }
-}
+
+    @GetMapping("invitations")
+    public List<InvitationDTO> getinvitations(@PathVariable Long idedit ){
+        return invitationService.findAll() ;
+    }
+    @DeleteMapping("invitations/delete/{id}")
+    public InvitationDTO deleteinvitationById(@PathVariable Long idedit , @PathVariable Long id){
+        return invitationService.deleteById(id);
+    }
+    @PostMapping("invitations/save")
+    public InvitationDTO saveinvitation(@PathVariable Long idedit ,@RequestBody InvitationDTO invitation){
+        return invitationService.save(invitation) ;
+    
+    
+} }

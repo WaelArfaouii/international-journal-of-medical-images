@@ -14,12 +14,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
-@Entity
-@Getter
-@Setter
+@MappedSuperclass
+@Data
 @AllArgsConstructor
-@ToString
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User implements Serializable , UserDetails {
@@ -39,6 +36,8 @@ public class User implements Serializable , UserDetails {
     private String jobTitle ;
     @Column(name = "address")
     private String address ;
+    @Column(name = "country")
+    private String country ;
     @Column(name = "phoneNumber")
     private String phoneNumber ;
     @Column(name = "institution")

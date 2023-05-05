@@ -1,17 +1,13 @@
 package com.arfaouiKallebi.JournalWeb.services.impl;
 
-import com.arfaouiKallebi.JournalWeb.dto.BearerToken;
-import com.arfaouiKallebi.JournalWeb.dto.LoginDto;
-import com.arfaouiKallebi.JournalWeb.dto.RegisterDto;
-import com.arfaouiKallebi.JournalWeb.model.Role;
-import com.arfaouiKallebi.JournalWeb.model.RoleName;
-import com.arfaouiKallebi.JournalWeb.model.User;
-import com.arfaouiKallebi.JournalWeb.repository.IRoleRepository;
-import com.arfaouiKallebi.JournalWeb.repository.IUserRepository;
+import com.arfaouiKallebi.JournalWeb.dto.*;
+import com.arfaouiKallebi.JournalWeb.model.*;
+import com.arfaouiKallebi.JournalWeb.repository.*;
 import com.arfaouiKallebi.JournalWeb.security.JwtUtilities;
 import com.arfaouiKallebi.JournalWeb.services.IUserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,10 +17,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -33,7 +32,12 @@ import java.util.List;
 public class UserService implements IUserService {
 
     private final AuthenticationManager authenticationManager ;
-    private final IUserRepository iUserRepository ;
+    @Autowired
+    private EditorRepository editorRepository ;
+    @Autowired
+    private ReviewerRepository reviewerRepository ;
+    @Autowired
+    private AuthorRepository authorRepository ;
     private final IRoleRepository iRoleRepository ;
     private final PasswordEncoder passwordEncoder ;
     private final JwtUtilities jwtUtilities ;
@@ -46,38 +50,80 @@ public class UserService implements IUserService {
 
     @Override
     public User saverUser(User user) {
-        return iUserRepository.save(user);
+        return null;
     }
 
     @Override
     public ResponseEntity<?> register(RegisterDto registerDto) {
-        if(iUserRepository.existsByEmail(registerDto.getEmail()))
+        if(     authorRepository.existsByEmail(registerDto.getEmail()) ||
+                reviewerRepository.existsByEmail(registerDto.getEmail()) ||
+                editorRepository.existsByEmail(registerDto.getEmail())
+        )
         { return  new ResponseEntity<>("email is already taken !", HttpStatus.SEE_OTHER); }
         else
-        {   User user = new User();
-            user.setEmail(registerDto.getEmail());
-            user.setFirstName(registerDto.getFirstName());
-            user.setLastName(registerDto.getLastName());
-            user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+        {
+
             Role role = new Role( );
             if (registerDto.getRole() != null) {
                 switch (registerDto.getRole()) {
 
                     case "author" :
                         role = new Role(RoleName.AUTHOR) ;
-                        break   ;
+                        Author author = new Author() ;
+                        author.setEmail(registerDto.getEmail());
+                        author.setFirstName(registerDto.getFirstName());
+                        author.setLastName(registerDto.getLastName());
+                        author.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+                        author.setPhoneNumber(registerDto.getPhoneNumber());
+                        author.setInstitution(registerDto.getInstitution());
+                        author.setJobTitle(registerDto.getJobTitle());
+                        author.setAddress(registerDto.getAddress());
+                        author.setCountry(registerDto.getCountry());
+                        author.setRoles(Collections.singletonList(role));
+                        authorRepository.save(author);
+                        String token1 = jwtUtilities.generateToken(registerDto.getEmail(),Collections.singletonList(role.getRoleName()));
+                        return new ResponseEntity<>(new BearerToken(token1 , "Bearer "),HttpStatus.OK);
+
                     case "reviewer" :
                         role = new Role(RoleName.REVIEWER) ;
-                        break;
+                        Reviewer reviewer = new Reviewer() ;
+                        reviewer.setEmail(registerDto.getEmail());
+                        reviewer.setFirstName(registerDto.getFirstName());
+                        reviewer.setLastName(registerDto.getLastName());
+                        reviewer.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+                        reviewer.setPhoneNumber(registerDto.getPhoneNumber());
+                        reviewer.setInstitution(registerDto.getInstitution());
+                        reviewer.setJobTitle(registerDto.getJobTitle());
+                        reviewer.setAddress(registerDto.getAddress());
+                        reviewer.setCountry(registerDto.getCountry());
+                        reviewer.setRoles(Collections.singletonList(role));
+                        reviewerRepository.save(reviewer);
+                        String token2 = jwtUtilities.generateToken(registerDto.getEmail(),Collections.singletonList(role.getRoleName()));
+                        return new ResponseEntity<>(new BearerToken(token2 , "Bearer "),HttpStatus.OK);
                     case "editor" :
                         role = new Role(RoleName.EDITOR) ;
+                        Editor editor = new Editor() ;
+                        editor.setEmail(registerDto.getEmail());
+                        editor.setFirstName(registerDto.getFirstName());
+                        editor.setLastName(registerDto.getLastName());
+                        editor.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+                        editor.setPhoneNumber(registerDto.getPhoneNumber());
+                        editor.setInstitution(registerDto.getInstitution());
+                        editor.setJobTitle(registerDto.getJobTitle());
+                        editor.setAddress(registerDto.getAddress());
+                        editor.setCountry(registerDto.getCountry());
+                        editor.setRoles(Collections.singletonList(role));
+                        editorRepository.save(editor);
+                        String token3 = jwtUtilities.generateToken(registerDto.getEmail(),Collections.singletonList(role.getRoleName()));
+                        return new ResponseEntity<>(new BearerToken(token3 , "Bearer "),HttpStatus.OK);
                 }
             }
-            else role = new Role(RoleName.AUTHOR) ;
-            user.setRoles(Collections.singletonList(role));
-            iUserRepository.save(user);
-            String token = jwtUtilities.generateToken(registerDto.getEmail(),Collections.singletonList(role.getRoleName()));
-            return new ResponseEntity<>(new BearerToken(token , "Bearer "),HttpStatus.OK);
+            else {
+                throw new UsernameNotFoundException("Role not sent ") ;
+
+            }
+            return null ;
+
 
         }
         }
@@ -91,12 +137,33 @@ public class UserService implements IUserService {
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        User user = iUserRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        List<String> rolesNames = new ArrayList<>();
-        user.getRoles().forEach(r-> rolesNames.add(r.getRoleName()));
-        String token = jwtUtilities.generateToken(user.getUsername(),rolesNames);
-        return token;
+        if(authorRepository.existsByEmail(loginDto.getEmail())){
+            Author user = authorRepository.findByEmail(authentication.getName()) ;
+            List<String> rolesNames = new ArrayList<>();
+            user.getRoles().forEach(r-> rolesNames.add(r.getRoleName()));
+            String token = jwtUtilities.generateToken(user.getUsername(),rolesNames);
+            return token;
+        }
+        else if(reviewerRepository.existsByEmail(loginDto.getEmail())){
+            Reviewer user = reviewerRepository.findByEmail(authentication.getName()) ;
+            List<String> rolesNames = new ArrayList<>();
+            user.getRoles().forEach(r-> rolesNames.add(r.getRoleName()));
+            String token = jwtUtilities.generateToken(user.getUsername(),rolesNames);
+            return token;
+        }
+        else if (editorRepository.existsByEmail(loginDto.getEmail())){
+            Editor user = editorRepository.findByEmail(authentication.getName()) ;
+            List<String> rolesNames = new ArrayList<>();
+            user.getRoles().forEach(r-> rolesNames.add(r.getRoleName()));
+            String token = jwtUtilities.generateToken(user.getUsername(),rolesNames);
+            return token;
+        }
+        else { throw new UsernameNotFoundException("User not found") ;}
+
+
     }
+
+
 
 }
 
