@@ -1,18 +1,18 @@
 package com.arfaouiKallebi.JournalWeb.services.impl;
-import com.arfaouiKallebi.JournalWeb.dto.ArticleDTO;
+
 import com.arfaouiKallebi.JournalWeb.dto.ItemDTO;
 import com.arfaouiKallebi.JournalWeb.dto.ManuscriptDTO;
+import com.arfaouiKallebi.JournalWeb.model.Attachment;
 import com.arfaouiKallebi.JournalWeb.model.Item;
 import com.arfaouiKallebi.JournalWeb.model.Manuscript;
-import com.arfaouiKallebi.JournalWeb.services.ItemService;
-import com.arfaouiKallebi.JournalWeb.dto.ItemDTO;
-import com.arfaouiKallebi.JournalWeb.exception.ErrorCodes;
-import com.arfaouiKallebi.JournalWeb.exception.InvalidEntityException;
 import com.arfaouiKallebi.JournalWeb.repository.ItemRepository;
-import com.arfaouiKallebi.JournalWeb.validator.ItemValidator;
+import com.arfaouiKallebi.JournalWeb.services.AttachmentService;
+import com.arfaouiKallebi.JournalWeb.services.ItemService;
+import com.arfaouiKallebi.JournalWeb.services.ManuscriptService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +22,10 @@ import java.util.stream.Collectors;
 //Logger
 @Slf4j
 public class ItemServiceImpl implements ItemService {
+    @Autowired
+    private AttachmentService attachmentService ;
+    @Autowired
+    private ManuscriptService manuscriptService ;
     @Autowired
     private ItemRepository itemRepository ;
     @Override
@@ -42,24 +46,20 @@ public class ItemServiceImpl implements ItemService {
         return ItemDTO.fromEntity(itemRepository.deleteItemById(id));
     }
 
-    @Override
-    public List<ItemDTO> save(List<ItemDTO> dtos) {
-//        List<String> errors = ItemValidator.validate(dto);
-//        if (!errors.isEmpty()) {
-//            log.error("Item is not valid {}", dto);
-//            throw new InvalidEntityException("Item is not valid ", ErrorCodes.ITEM_NOT_VALID, errors);
-//        }
-        Manuscript manuscript = new Manuscript() ;
-        List<Item> items = new ArrayList<>() ;
-        List<ItemDTO> itemDTOS = new ArrayList<>() ;
-        for (ItemDTO dto:dtos) {
-            Item item = ItemDTO.toEntity(dto) ;
-            item.setManuscript(manuscript);
-            items.add(item) ;
-            itemDTOS.add(ItemDTO.fromEntity(item)) ;
-            itemRepository.save(item) ;
-        }
 
-        return itemDTOS ;
+
+    @Override
+    public Long save(Long idman , ItemDTO dto , MultipartFile file) throws Exception{
+        Attachment attachment = attachmentService.saveAttachment(file) ;
+        Manuscript manuscript = ManuscriptDTO.toEntity(manuscriptService.findById(idman))  ;
+        Item item = ItemDTO.toEntity(dto) ;
+        item.setAttachment(attachment);
+        List<Item> items = manuscript.getItems() ;
+        items.add(item) ;
+        manuscript.setItems(items);
+        ManuscriptDTO man = manuscriptService.save(ManuscriptDTO.fromEntity(manuscript)) ;
+        item.setManuscript(ManuscriptDTO.toEntity(man));
+        Item itemSaved = itemRepository.save(item) ;
+        return itemSaved.getId() ;
     }
 }

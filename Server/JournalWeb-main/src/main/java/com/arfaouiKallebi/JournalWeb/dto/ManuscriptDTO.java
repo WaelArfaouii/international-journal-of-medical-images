@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @Builder
 public class ManuscriptDTO {
     private Long id ;
+    @JsonIgnore
     private Author submitter ;
     private String title ;
     private List<String> keywords ;
