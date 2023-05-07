@@ -2,6 +2,7 @@ package com.arfaouiKallebi.JournalWeb.dto;
 import com.arfaouiKallebi.JournalWeb.model.Attachment;
 import com.arfaouiKallebi.JournalWeb.model.Item;
 import com.arfaouiKallebi.JournalWeb.model.Manuscript;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ public class ItemDTO {
     private String type ;
     private String description ;
     private Attachment attachment ;
+    @JsonIgnore
     private Manuscript manuscript ;
     public static ItemDTO fromEntity(Item item) {
         if (item == null) {
@@ -22,7 +24,6 @@ public class ItemDTO {
                 .id(item.getId())
                 .attachment(item.getAttachment())
                 .description(item.getDescription())
-                .manuscript(item.getManuscript())
                 .type(item.getType())
                 .build();
     }

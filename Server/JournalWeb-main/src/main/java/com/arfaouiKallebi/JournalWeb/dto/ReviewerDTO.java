@@ -40,10 +40,7 @@ public class ReviewerDTO {
                 .institution(reviewer.getInstitution())
                 .address(reviewer.getAddress())
                 .role("Reviewer")
-                .invitations(reviewer.getInvitations() != null ?
-                        reviewer.getInvitations().stream()
-                                .map(InvitationDTO::fromEntity)
-                                .collect(Collectors.toList()) : null)
+                .country(reviewer.getCountry())
                 .build();
     }
 
@@ -59,6 +56,7 @@ public class ReviewerDTO {
         reviewer.setInstitution(reviewerDTO.getInstitution());
         reviewer.setJobTitle(reviewerDTO.getJobTitle());
         reviewer.setPhoneNumber(reviewer.getPhoneNumber());
+        reviewer.setCountry(reviewer.getCountry());
         reviewer.setAddress(reviewerDTO.getAddress());
         return reviewer;
     }

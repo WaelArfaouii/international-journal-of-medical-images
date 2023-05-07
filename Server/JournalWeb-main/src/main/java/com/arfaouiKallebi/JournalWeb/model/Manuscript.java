@@ -23,7 +23,7 @@ public class Manuscript extends AbstractEntity {
     @OneToMany(cascade = CascadeType.ALL)
     @Column(name = "comments")
     private List<Comment> comments ;
-    @OneToMany
+    @OneToMany(mappedBy = "manuscript")
     @Column(name = "items")
     private List<Item> items ;
     @ManyToMany

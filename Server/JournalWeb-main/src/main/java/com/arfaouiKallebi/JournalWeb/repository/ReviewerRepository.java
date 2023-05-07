@@ -8,8 +8,8 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ReviewerRepository extends JpaRepository<Reviewer,Long > {
     Boolean existsByEmail(String email);
-    @Query(value = "delete  from Reviewer a where a.id =:id")
-    Reviewer deleteReviewerById(Long id);
+    @Query(value = "select a  from Reviewer a where a.id =:id")
+    Reviewer findRevById(Long id);
     @Query(value = "select a  from Reviewer a where a.email =:name")
     Reviewer findByEmail(String name);
 }

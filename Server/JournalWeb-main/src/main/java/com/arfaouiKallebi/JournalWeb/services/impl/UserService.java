@@ -80,8 +80,8 @@ public class UserService implements IUserService {
                         author.setAddress(registerDto.getAddress());
                         author.setCountry(registerDto.getCountry());
                         author.setRoles(Collections.singletonList(role));
-                        authorRepository.save(author);
-                        String token1 = jwtUtilities.generateToken(registerDto.getEmail(),Collections.singletonList(role.getRoleName()));
+                        Author auth = authorRepository.save(author);
+                        String token1 = jwtUtilities.generateToken(auth.getId().toString() , registerDto.getEmail(),Collections.singletonList(role.getRoleName()));
                         return new ResponseEntity<>(new BearerToken(token1 , "Bearer "),HttpStatus.OK);
 
                     case "reviewer" :
@@ -97,8 +97,8 @@ public class UserService implements IUserService {
                         reviewer.setAddress(registerDto.getAddress());
                         reviewer.setCountry(registerDto.getCountry());
                         reviewer.setRoles(Collections.singletonList(role));
-                        reviewerRepository.save(reviewer);
-                        String token2 = jwtUtilities.generateToken(registerDto.getEmail(),Collections.singletonList(role.getRoleName()));
+                        Reviewer rev = reviewerRepository.save(reviewer);
+                        String token2 = jwtUtilities.generateToken(rev.getId().toString() , registerDto.getEmail(),Collections.singletonList(role.getRoleName()));
                         return new ResponseEntity<>(new BearerToken(token2 , "Bearer "),HttpStatus.OK);
                     case "editor" :
                         role = new Role(RoleName.EDITOR) ;
@@ -113,8 +113,8 @@ public class UserService implements IUserService {
                         editor.setAddress(registerDto.getAddress());
                         editor.setCountry(registerDto.getCountry());
                         editor.setRoles(Collections.singletonList(role));
-                        editorRepository.save(editor);
-                        String token3 = jwtUtilities.generateToken(registerDto.getEmail(),Collections.singletonList(role.getRoleName()));
+                        Editor ed = editorRepository.save(editor);
+                        String token3 = jwtUtilities.generateToken(ed.getId().toString() , registerDto.getEmail(),Collections.singletonList(role.getRoleName()));
                         return new ResponseEntity<>(new BearerToken(token3 , "Bearer "),HttpStatus.OK);
                 }
             }
@@ -141,21 +141,21 @@ public class UserService implements IUserService {
             Author user = authorRepository.findByEmail(authentication.getName()) ;
             List<String> rolesNames = new ArrayList<>();
             user.getRoles().forEach(r-> rolesNames.add(r.getRoleName()));
-            String token = jwtUtilities.generateToken(user.getUsername(),rolesNames);
+            String token = jwtUtilities.generateToken(user.getId().toString() , user.getUsername(),rolesNames);
             return token;
         }
         else if(reviewerRepository.existsByEmail(loginDto.getEmail())){
             Reviewer user = reviewerRepository.findByEmail(authentication.getName()) ;
             List<String> rolesNames = new ArrayList<>();
             user.getRoles().forEach(r-> rolesNames.add(r.getRoleName()));
-            String token = jwtUtilities.generateToken(user.getUsername(),rolesNames);
+            String token = jwtUtilities.generateToken(user.getId().toString() , user.getUsername(),rolesNames);
             return token;
         }
         else if (editorRepository.existsByEmail(loginDto.getEmail())){
             Editor user = editorRepository.findByEmail(authentication.getName()) ;
             List<String> rolesNames = new ArrayList<>();
             user.getRoles().forEach(r-> rolesNames.add(r.getRoleName()));
-            String token = jwtUtilities.generateToken(user.getUsername(),rolesNames);
+            String token = jwtUtilities.generateToken(user.getId().toString(),user.getUsername(),rolesNames);
             return token;
         }
         else { throw new UsernameNotFoundException("User not found") ;}

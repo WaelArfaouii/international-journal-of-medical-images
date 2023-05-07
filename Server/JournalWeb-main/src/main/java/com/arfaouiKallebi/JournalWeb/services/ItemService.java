@@ -4,15 +4,14 @@ import com.arfaouiKallebi.JournalWeb.dto.ItemDTO;
 
 import java.util.List;
 
-import com.arfaouiKallebi.JournalWeb.dto.ItemDTO;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 public interface ItemService {
-    List<ItemDTO> findAll() ;
     ItemDTO findById(Long id) ;
-    ItemDTO deleteById(Long id) ;
+    ResponseEntity<?> deleteById(Long id) ;
 
-    Long save(Long idman , ItemDTO dto , MultipartFile file) throws Exception ;
+    ItemDTO save(Long idman , ItemDTO dto , MultipartFile file) throws Exception ;
+
+    List<ItemDTO> getItems(Long idman);
 }

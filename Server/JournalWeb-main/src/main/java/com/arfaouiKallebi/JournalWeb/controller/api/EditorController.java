@@ -5,7 +5,9 @@ import com.arfaouiKallebi.JournalWeb.dto.ReviewerDTO;
 import com.arfaouiKallebi.JournalWeb.services.InvitationService;
 import com.arfaouiKallebi.JournalWeb.services.ReviewerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class EditorController {
         return reviewerService.findById(id) ;
     }
     @DeleteMapping("reviewers/delete/{id}")
-    public ReviewerDTO deleteReviewerById(@PathVariable Long id){
+    public ResponseEntity<?> deleteReviewerById(@PathVariable Long id){
         return reviewerService.deleteById(id);
     }
     @PostMapping("reviewers/save")

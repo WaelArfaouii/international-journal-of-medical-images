@@ -15,7 +15,6 @@ public class CommentDTO {
     private Long id;
     private String title ;
     private String content ;
-    private Instant createdDate ;
     private ManuscriptDTO manuscript ;
 
     public static CommentDTO fromEntity(Comment comment) {
@@ -27,7 +26,6 @@ public class CommentDTO {
                 .title(comment.getTitle())
                 .content(comment.getContent())
                 .manuscript(ManuscriptDTO.fromEntity(comment.getManuscript()))
-                .createdDate(comment.getCreatedDate())
                 .build();
     }
     public static Comment toEntity(CommentDTO commentDTO) {

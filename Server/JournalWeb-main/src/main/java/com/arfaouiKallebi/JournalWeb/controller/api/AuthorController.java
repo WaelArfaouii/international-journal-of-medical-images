@@ -3,6 +3,7 @@ package com.arfaouiKallebi.JournalWeb.controller.api;
 import com.arfaouiKallebi.JournalWeb.dto.ManuscriptDTO;
 import com.arfaouiKallebi.JournalWeb.services.ManuscriptService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +20,8 @@ public class AuthorController {
         return manuscriptService.findManuscripts(idauth) ;
     }
     @DeleteMapping("manuscripts/delete/{id}")
-    public ManuscriptDTO deleteManuscriptById(@PathVariable Long idauth , @PathVariable Long id){
-        return manuscriptService.deleteManuscriptById(idauth, id);
+    public ResponseEntity<?> deleteManuscriptById(@PathVariable Long id){
+        return manuscriptService.deleteById(id);
     }
     @PostMapping("manuscripts/save")
     public ManuscriptDTO saveManuscript(@PathVariable Long idauth , @RequestBody ManuscriptDTO manuscript){
