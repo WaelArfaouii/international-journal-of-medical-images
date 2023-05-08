@@ -5,6 +5,7 @@ import com.arfaouiKallebi.JournalWeb.dto.ReviewerDTO;
 import com.arfaouiKallebi.JournalWeb.dto.ReviewerDTO;
 import com.arfaouiKallebi.JournalWeb.exception.ErrorCodes;
 import com.arfaouiKallebi.JournalWeb.exception.InvalidEntityException;
+import com.arfaouiKallebi.JournalWeb.repository.InvitationRepository;
 import com.arfaouiKallebi.JournalWeb.repository.ReviewerRepository;
 import com.arfaouiKallebi.JournalWeb.services.ReviewerService;
 import com.arfaouiKallebi.JournalWeb.validator.ReviewerValidator;
@@ -23,6 +24,8 @@ import java.util.stream.Collectors;
 public class ReviewerServiceImpl implements ReviewerService {
     @Autowired
     private ReviewerRepository reviewerRepository ;
+    @Autowired
+    private InvitationRepository invitationRepository ;
     @Override
     public List<ReviewerDTO> findAll() {
         return
@@ -39,6 +42,7 @@ public class ReviewerServiceImpl implements ReviewerService {
     @Override
     public ResponseEntity<?> deleteById(Long id) {
 
+        invitationRepository.deleteInv(id) ;
         reviewerRepository.deleteById(id);
         return new ResponseEntity<>("Reviewer deleted !" , HttpStatus.OK) ;
 

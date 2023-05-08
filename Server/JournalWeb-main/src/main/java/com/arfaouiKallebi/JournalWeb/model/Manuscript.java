@@ -30,4 +30,6 @@ public class Manuscript extends AbstractEntity {
     @Column(name = "authors")
     private List<Author> authors ;
     private String status = "processed" ;
+    @OneToOne(mappedBy = "manuscript")
+    private Invitation invitation;
 }

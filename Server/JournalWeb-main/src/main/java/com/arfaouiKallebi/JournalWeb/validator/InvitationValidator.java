@@ -14,9 +14,7 @@ public class InvitationValidator {
             return errors ;
 
         }
-        if (!StringUtils.hasLength(invitationDTO.getTitle())) {
-            errors.add("Enter the invitation title !") ;
-        }
+
         if (invitationDTO.getReviewerDTO() == null ) {
                 errors.add("Enter at least one Reviewer !") ;
         }

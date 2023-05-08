@@ -13,7 +13,7 @@ public class InvitationDTO {
     private Long id;
     private EditorDTO editorDTO ;
     private ReviewerDTO reviewerDTO ;
-    private String title;
+    private ManuscriptDTO manuscriptDTO ;
     private Instant createdDate ;
 
     public static InvitationDTO fromEntity(Invitation invitation) {
@@ -22,8 +22,10 @@ public class InvitationDTO {
         }
 
         return InvitationDTO.builder()
+                .id(invitation.getId())
                 .editorDTO(EditorDTO.fromEntity(invitation.getEditor()))
                 .reviewerDTO(ReviewerDTO.fromEntity(invitation.getReviewer()))
+                .manuscriptDTO(ManuscriptDTO.fromEntity(invitation.getManuscript()))
                 .createdDate(invitation.getCreatedDate())
                 .build();
     }
@@ -33,7 +35,7 @@ public class InvitationDTO {
             return null;
         }
         Invitation invitation = new Invitation();
-        invitation.setTitle(invitationDto.title);
+        invitation.setManuscript(ManuscriptDTO.toEntity(invitationDto.getManuscriptDTO()));
         invitation.setReviewer(ReviewerDTO.toEntity(invitationDto.reviewerDTO) );
         invitation.setEditor(EditorDTO.toEntity(invitationDto.editorDTO) );
         return invitation;

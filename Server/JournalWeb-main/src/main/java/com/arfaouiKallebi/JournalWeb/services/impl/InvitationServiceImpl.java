@@ -1,12 +1,19 @@
 package com.arfaouiKallebi.JournalWeb.services.impl;
 import com.arfaouiKallebi.JournalWeb.dto.InvitationDTO;
+import com.arfaouiKallebi.JournalWeb.dto.ManuscriptDTO;
 import com.arfaouiKallebi.JournalWeb.exception.ErrorCodes;
 import com.arfaouiKallebi.JournalWeb.exception.InvalidEntityException;
+import com.arfaouiKallebi.JournalWeb.model.Invitation;
+import com.arfaouiKallebi.JournalWeb.repository.EditorRepository;
 import com.arfaouiKallebi.JournalWeb.repository.InvitationRepository;
+import com.arfaouiKallebi.JournalWeb.repository.ManuscriptRepository;
+import com.arfaouiKallebi.JournalWeb.repository.ReviewerRepository;
 import com.arfaouiKallebi.JournalWeb.services.InvitationService;
 import com.arfaouiKallebi.JournalWeb.validator.InvitationValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +23,12 @@ import java.util.List;
 public class InvitationServiceImpl implements InvitationService {
     @Autowired
     private InvitationRepository invitationRepository ;
+    @Autowired
+    private EditorRepository editorRepository ;
+    @Autowired
+    private ReviewerRepository reviewerRepository ;
+    @Autowired
+    private ManuscriptRepository manuscriptRepository ;
     @Override
     public List<InvitationDTO> findAll() {
         return null;
@@ -44,5 +57,23 @@ public class InvitationServiceImpl implements InvitationService {
                         InvitationDTO.toEntity(dto)
                 )
         );
+    }
+
+    @Override
+    public InvitationDTO sendInvitation(Long idedit, Long idrev, Long idman, InvitationDTO invitation) {
+        Invitation inv = InvitationDTO.toEntity(invitation) ;
+        inv.setEditor(editorRepository.getReferenceById(idedit));
+        inv.setReviewer(reviewerRepository.getReferenceById(idrev));
+        inv.setManuscript(manuscriptRepository.getReferenceById(idman));
+        Invitation in = invitationRepository.save(inv)  ;
+        System.out.println(in.getId());
+        return InvitationDTO.fromEntity(in) ;
+
+    }
+
+    @Override
+    public ResponseEntity<?> rejectManuscript(Long idman) {
+        manuscriptRepository.rejectManuscript(idman) ;
+        return new ResponseEntity<>("Manuscript Rejected !" , HttpStatus.OK) ;
     }
 }

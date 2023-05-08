@@ -9,6 +9,7 @@ public class JournalWebApplication {
 
 	public static void main(String[] args) {
 
+
 		SpringApplication.run(JournalWebApplication.class, args);
 	}
 	public ObjectMapper getObjectMapper() {

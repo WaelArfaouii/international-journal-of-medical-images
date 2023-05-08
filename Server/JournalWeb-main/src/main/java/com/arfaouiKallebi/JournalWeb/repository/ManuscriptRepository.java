@@ -32,4 +32,8 @@ public interface ManuscriptRepository extends JpaRepository<Manuscript,Long> {
     @Modifying
     @Query(value = "delete  from Manuscript a where a.id =:id")
     void deleteManById(Long id);
+    @Modifying
+    @Transactional
+    @Query(value = "update Manuscript m set m.status='sentBack' where m.id =:idman")
+    void rejectManuscript(Long idman);
 }

@@ -24,6 +24,8 @@ public class Invitation extends AbstractEntity{
     private String title ;
     @Column(name = "state")
     private String state = "not approved" ;
+    @OneToOne
+    private Manuscript manuscript ;
 
 
 }

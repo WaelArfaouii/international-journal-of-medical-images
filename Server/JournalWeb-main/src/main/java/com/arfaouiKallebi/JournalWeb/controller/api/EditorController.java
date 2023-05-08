@@ -44,9 +44,13 @@ public class EditorController {
     public InvitationDTO deleteinvitationById(@PathVariable Long idedit , @PathVariable Long id){
         return invitationService.deleteById(id);
     }
-    @PostMapping("invitations/save")
-    public InvitationDTO saveinvitation(@PathVariable Long idedit ,@RequestBody InvitationDTO invitation){
-        return invitationService.save(invitation) ;
-    
-    
-} }
+    @PostMapping("invitations/reviewer/{idrev}/manuscript/{idman}")
+    public InvitationDTO saveinvitation(@PathVariable Long idedit ,@PathVariable Long idrev , @PathVariable Long idman ,@RequestBody InvitationDTO invitation){
+        return invitationService.sendInvitation(idedit ,idrev ,idman , invitation) ;
+
+    }
+    @GetMapping("manuscript/{idman}")
+    public ResponseEntity<?> rejectManuscipt(@PathVariable Long idman ){
+        return invitationService.rejectManuscript(idman);
+    }
+}
