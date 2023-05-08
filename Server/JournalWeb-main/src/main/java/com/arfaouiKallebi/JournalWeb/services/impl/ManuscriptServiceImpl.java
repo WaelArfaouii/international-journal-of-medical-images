@@ -1,6 +1,7 @@
 package com.arfaouiKallebi.JournalWeb.services.impl;
 
 import com.arfaouiKallebi.JournalWeb.dto.ManuscriptDTO;
+import com.arfaouiKallebi.JournalWeb.exception.EntityNotFoundException;
 import com.arfaouiKallebi.JournalWeb.exception.ErrorCodes;
 import com.arfaouiKallebi.JournalWeb.exception.InvalidEntityException;
 import com.arfaouiKallebi.JournalWeb.model.Item;
@@ -95,8 +96,14 @@ public class ManuscriptServiceImpl implements ManuscriptService {
 
     @Override
     public ResponseEntity<?> deleteById(Long id) {
-        manuscriptRepository.deleteById(id);
-        return new ResponseEntity<>("Manuscript deleted !" , HttpStatus.OK);
+        if (manuscriptRepository.existsById(id)){
+            manuscriptRepository.deleteManById(id);
+            return new ResponseEntity<>("Manuscript deleted !" , HttpStatus.OK);
+        }
+        throw new EntityNotFoundException(
+                "No manuscript found ! ",
+                ErrorCodes.USER_NOT_FOUND) ;
+
     }
 
 }
