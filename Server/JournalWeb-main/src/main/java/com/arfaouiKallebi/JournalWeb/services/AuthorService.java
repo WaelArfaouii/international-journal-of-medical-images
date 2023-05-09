@@ -10,4 +10,6 @@ public interface AuthorService {
     AuthorDTO deleteById(Long id) ;
 
     AuthorDTO save(AuthorDTO dto);
+
+    List<AuthorDTO> addAuthor(Long idman, Long author);
 }

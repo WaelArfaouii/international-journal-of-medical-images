@@ -1,8 +1,10 @@
 package com.arfaouiKallebi.JournalWeb.services.impl;
 
 import com.arfaouiKallebi.JournalWeb.dto.ItemDTO;
+import com.arfaouiKallebi.JournalWeb.dto.ManuscriptDTO;
 import com.arfaouiKallebi.JournalWeb.model.Attachment;
 import com.arfaouiKallebi.JournalWeb.model.Item;
+import com.arfaouiKallebi.JournalWeb.model.Manuscript;
 import com.arfaouiKallebi.JournalWeb.repository.ItemRepository;
 import com.arfaouiKallebi.JournalWeb.services.AttachmentService;
 import com.arfaouiKallebi.JournalWeb.services.ItemService;
@@ -47,8 +49,10 @@ public class ItemServiceImpl implements ItemService {
     public ItemDTO save(Long idman , ItemDTO dto , MultipartFile file) throws Exception{
         Attachment attachment = attachmentService.saveAttachment(file) ;
         Item item = ItemDTO.toEntity(dto) ;
-        item.setManuscript(manuscriptService.findById(idman));
+        Manuscript man = manuscriptService.findById(idman) ;
         item.setAttachment(attachment);
+        item.setManuscript(man);
+        man.getItems().add(item) ;
         Item item1 = itemRepository.save(item) ;
         return ItemDTO.fromEntity(item1) ;
 

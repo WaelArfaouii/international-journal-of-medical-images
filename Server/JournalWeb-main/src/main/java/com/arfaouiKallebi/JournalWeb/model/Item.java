@@ -19,7 +19,7 @@ public class Item extends AbstractEntity{
 
     private String type ;
     private String description ;
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(fetch = FetchType.EAGER  , cascade = CascadeType.PERSIST)
     @JoinColumn(name = "manuscript_id")
     private Manuscript manuscript ;
     @OneToOne

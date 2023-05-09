@@ -23,10 +23,10 @@ public class Manuscript extends AbstractEntity {
     @OneToMany(cascade = CascadeType.ALL)
     @Column(name = "comments")
     private List<Comment> comments ;
-    @OneToMany(mappedBy = "manuscript")
+    @OneToMany(fetch = FetchType.EAGER  , cascade = CascadeType.PERSIST)
     @Column(name = "items")
     private List<Item> items ;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER  , cascade = CascadeType.PERSIST)
     @Column(name = "authors")
     private List<Author> authors ;
     private String status = "processed" ;

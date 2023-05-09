@@ -1,10 +1,12 @@
 package com.arfaouiKallebi.JournalWeb.controller.api;
 
+import com.arfaouiKallebi.JournalWeb.dto.AuthorDTO;
 import com.arfaouiKallebi.JournalWeb.dto.CommentDTO;
 import com.arfaouiKallebi.JournalWeb.dto.ItemDTO;
 import com.arfaouiKallebi.JournalWeb.model.Attachment;
 import com.arfaouiKallebi.JournalWeb.model.Item;
 import com.arfaouiKallebi.JournalWeb.services.AttachmentService;
+import com.arfaouiKallebi.JournalWeb.services.AuthorService;
 import com.arfaouiKallebi.JournalWeb.services.CommentService;
 import com.arfaouiKallebi.JournalWeb.services.ItemService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +25,8 @@ import java.util.List;
 public class ManuscriptController {
     @Autowired
     private CommentService commentService ;
+    @Autowired
+    private AuthorService authorService ;
     @Autowired
     private AttachmentService attachmentService ;
     @Autowired
@@ -70,4 +74,10 @@ public class ManuscriptController {
     public CommentDTO saveComment(@PathVariable Long idman ,@RequestBody CommentDTO comment){
         return commentService.saveComment(idman , comment) ;
     }
+    @GetMapping("authors/add/{author}")
+    public List<AuthorDTO> addAuthor(@PathVariable Long idman , @PathVariable Long author){
+        return authorService.addAuthor(idman , author) ;
+    }
+
+
 }

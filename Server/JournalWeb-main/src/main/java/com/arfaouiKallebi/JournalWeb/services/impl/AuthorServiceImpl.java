@@ -4,7 +4,10 @@ package com.arfaouiKallebi.JournalWeb.services.impl;
 import com.arfaouiKallebi.JournalWeb.dto.AuthorDTO;
 import com.arfaouiKallebi.JournalWeb.exception.ErrorCodes;
 import com.arfaouiKallebi.JournalWeb.exception.InvalidEntityException;
+import com.arfaouiKallebi.JournalWeb.model.Author;
+import com.arfaouiKallebi.JournalWeb.model.Manuscript;
 import com.arfaouiKallebi.JournalWeb.repository.AuthorRepository;
+import com.arfaouiKallebi.JournalWeb.repository.ManuscriptRepository;
 import com.arfaouiKallebi.JournalWeb.services.AuthorService;
 import com.arfaouiKallebi.JournalWeb.validator.AuthorValidator;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +23,8 @@ import java.util.stream.Collectors;
 public class AuthorServiceImpl implements AuthorService {
     @Autowired
     private AuthorRepository authorRepository ;
+    @Autowired
+    private ManuscriptRepository manuscriptRepository ;
     @Override
     public List<AuthorDTO> findAll() {
         return authorRepository.findAll().stream()
@@ -50,5 +55,17 @@ public class AuthorServiceImpl implements AuthorService {
                         AuthorDTO.toEntity(dto)
                 )
         );
+    }
+
+    @Override
+    public List<AuthorDTO> addAuthor(Long idman, Long author) {
+        Author auth = authorRepository.getReferenceById(author);
+        Manuscript man = manuscriptRepository.getReferenceById(idman);
+        man.getAuthors().add(auth);
+        auth.getManuscripts().add(man);
+        manuscriptRepository.save(man);
+        return man.getAuthors().stream()
+                .map(AuthorDTO::fromEntity)
+                .collect(Collectors.toList());
     }
 }
